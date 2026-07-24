@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banco Safra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--navy:#0A1628;--navy2:#0D1E35;--navy3:#122240;--blue:#1A4480;--blue2:#1E5099;--white:#FFFFFF;--offwhite:#F7F9FC;--light:#EEF2F8;--border:#D0DAE8;--text:#0A1628;--muted:#5A6E8C;--accent:#C8A96E;--green:#1A6B4A;--red:#B83232;}
+    body{font-family:'Montserrat',sans-serif;background:var(--offwhite);color:var(--text);min-height:100vh;font-weight:300}
+    .logo-mark{display:flex;align-items:center;gap:10px}
+    .logo-icon{width:32px;height:32px;flex-shrink:0}
+    .logo-text-wrap{display:flex;flex-direction:column;line-height:1}
+    .logo-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--navy);letter-spacing:1px}
+    .logo-name span{color:var(--blue)}
+    .logo-sub{font-family:'Montserrat',sans-serif;font-size:7px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+    nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 56px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 12px rgba(10,22,40,.06)}
+    nav ul{display:flex;gap:32px;list-style:none}
+    nav a{color:var(--muted);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;transition:.2s}
+    nav a:hover{color:var(--navy)}
+    .nav-cta{background:var(--navy);color:#fff;padding:9px 24px;border-radius:2px;font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;transition:.2s;font-family:'Montserrat',sans-serif}
+    .nav-cta:hover{background:var(--blue)}
+    .hero{background:var(--navy);padding:96px 56px 120px;position:relative;overflow:hidden}
+    .hero-circle1{position:absolute;top:-120px;right:-80px;width:500px;height:500px;border:1px solid rgba(255,255,255,.04);border-radius:50%}
+    .hero-circle2{position:absolute;top:-60px;right:-20px;width:380px;height:380px;border:1px solid rgba(255,255,255,.04);border-radius:50%}
+    .hero-circle3{position:absolute;bottom:-200px;left:-100px;width:400px;height:400px;border:1px solid rgba(255,255,255,.04);border-radius:50%}
+    .hero-inner{max-width:620px;position:relative;z-index:1}
+    .hero-eyebrow{font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;color:var(--white);line-height:1.15;margin-bottom:20px;letter-spacing:-.5px}
+    .hero h1 em{font-style:italic;color:var(--accent)}
+    .hero p{color:rgba(255,255,255,.55);font-size:13px;line-height:1.9;max-width:440px;font-weight:300;letter-spacing:.3px}
+    .hero-rule{width:40px;height:1px;background:var(--accent);margin:24px 0}
+    .sim-wrap{max-width:860px;margin:-56px auto 0;padding:0 56px 80px;position:relative;z-index:10}
+    .sim-card{background:var(--white);border:1px solid var(--border);box-shadow:0 4px 40px rgba(10,22,40,.10);padding:52px 56px}
+    .sim-eyebrow{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .sim-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--navy);margin-bottom:6px}
+    .sim-sub{color:var(--muted);font-size:11px;font-weight:400;letter-spacing:.3px;line-height:1.7;margin-bottom:44px;border-bottom:1px solid var(--border);padding-bottom:24px}
+    .slider-group{margin-bottom:40px}
+    .slider-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px}
+    .slider-label{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .slider-value{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;color:var(--navy);letter-spacing:-.5px}
+    .slider-value small{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:400;color:var(--muted);margin-left:4px}
+    input[type=range]{width:100%;-webkit-appearance:none;height:1px;border-radius:0;background:var(--border);outline:none;cursor:pointer}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--navy);border:2px solid var(--white);box-shadow:0 2px 8px rgba(10,22,40,.25);cursor:pointer;transition:.15s}
+    input[type=range]::-webkit-slider-thumb:hover{background:var(--blue);transform:scale(1.1)}
+    .slider-range{display:flex;justify-content:space-between;margin-top:8px}
+    .slider-range span{font-size:9px;color:var(--muted);letter-spacing:.5px}
+    .info-tag{display:inline-block;font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border:1px solid var(--border);margin-top:10px;color:var(--muted)}
+    .resultado{background:var(--navy);padding:36px 40px;margin:4px 0 40px;display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0}
+    .res-divider{background:rgba(255,255,255,.08)}
+    .res-item{text-align:center;padding:0 20px}
+    .res-label{font-size:8px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px}
+    .res-valor{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:var(--white);letter-spacing:-.3px}
+    .res-valor.destaque{color:var(--accent);font-size:38px}
+    .res-sub{font-size:9px;color:rgba(255,255,255,.3);margin-top:6px;letter-spacing:.5px}
+    .formula-box{background:var(--light);border-left:2px solid var(--accent);padding:14px 20px;margin-bottom:36px;font-size:11px;color:var(--muted);letter-spacing:.3px}
+    .formula-box strong{color:var(--navy);font-weight:600}
+    .barra-wrap{margin-bottom:40px}
+    .barra-header{display:flex;justify-content:space-between;margin-bottom:12px}
+    .barra-label{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .barra-pct{font-size:9px;font-weight:600;letter-spacing:1px;color:var(--blue)}
+    .barra-bg{height:2px;background:var(--border)}
+    .barra-fill{height:100%;background:var(--navy);transition:width .4s ease}
+    .barra-legend{display:flex;gap:24px;margin-top:12px}
+    .barra-leg-item{display:flex;align-items:center;gap:8px;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+    .barra-dot{width:8px;height:8px;flex-shrink:0}
+    .tabela-wrap{border:1px solid var(--border);margin-bottom:8px}
+    .tabela-header{background:var(--navy);padding:12px 20px;display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:8px}
+    .tabela-header span{font-size:8px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+    .tabela-row{padding:13px 20px;display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:8px;border-bottom:1px solid var(--border);transition:.15s}
+    .tabela-row:last-child{border-bottom:none}
+    .tabela-row:hover{background:var(--light)}
+    .tabela-row span{font-size:12px;color:var(--text);font-weight:300}
+    .tabela-row span.num{font-weight:500;color:var(--navy);font-size:11px;letter-spacing:.5px}
+    .tabela-row span.juros{color:var(--red);font-size:11px}
+    .tabela-row span.amort{color:var(--green);font-size:11px}
+    .about-section{background:var(--white);padding:96px 56px;border-top:1px solid var(--border)}
+    .about-inner{max-width:860px;margin:0 auto}
+    .section-eyebrow{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--navy);margin-bottom:20px;line-height:1.2}
+    .section-rule{width:32px;height:1px;background:var(--accent);margin-bottom:24px}
+    .section-desc{color:var(--muted);font-size:12px;line-height:1.9;max-width:520px;margin-bottom:56px;font-weight:300}
+    .cards-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);margin-bottom:40px}
+    .card{background:var(--white);padding:32px 28px}
+    .card:hover{background:var(--offwhite)}
+    .card-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--border);margin-bottom:16px}
+    .card h3{font-size:12px;font-weight:600;letter-spacing:.5px;color:var(--navy);margin-bottom:10px;text-transform:uppercase}
+    .card p{font-size:11px;color:var(--muted);line-height:1.8;font-weight:300}
+    .missao{background:var(--navy);padding:40px 48px;display:flex;align-items:flex-start;gap:24px}
+    .missao-rule{width:2px;background:var(--accent);flex-shrink:0;align-self:stretch;min-height:60px}
+    .missao p{font-family:'Cormorant Garamond',serif;color:rgba(255,255,255,.75);font-size:18px;line-height:1.8;font-weight:300;font-style:italic}
+    .missao small{font-family:'Montserrat',sans-serif;color:rgba(255,255,255,.3);font-size:9px;letter-spacing:2px;text-transform:uppercase;display:block;margin-top:12px}
+    .login-overlay{position:fixed;inset:0;background:rgba(10,22,40,.9);display:flex;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(6px)}
+    .login-box{background:var(--white);padding:52px 48px;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,.3)}
+    .login-eyebrow{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .login-box h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--navy);margin-bottom:6px}
+    .login-box p{color:var(--muted);font-size:11px;margin-bottom:32px;line-height:1.7;font-weight:300}
+    .login-input-wrap{position:relative;margin-bottom:16px}
+    .login-input-wrap label{display:block;font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .login-input-wrap input{width:100%;background:var(--offwhite);border:1px solid var(--border);padding:13px 44px 13px 14px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:13px;font-weight:300;outline:none;transition:.2s}
+    .login-input-wrap input:focus{border-color:var(--navy);background:#fff}
+    .toggle-pw{position:absolute;right:12px;bottom:13px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px}
+    .login-btn{width:100%;background:var(--navy);color:#fff;padding:14px;font-weight:500;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:none;transition:.2s;font-family:'Montserrat',sans-serif;margin-top:4px}
+    .login-btn:hover{background:var(--blue)}
+    .login-error{background:#FFF5F5;border-left:2px solid var(--red);color:var(--red);padding:10px 14px;font-size:11px;margin-bottom:16px;display:none}
+    .login-error.show{display:block}
+    .shake{animation:shake .4s ease}
+    @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+    .admin-page{background:var(--offwhite);min-height:100vh}
+    .admin-nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 56px;height:68px;display:flex;align-items:center;justify-content:space-between}
+    .admin-section{padding:48px 56px;max-width:1300px;margin:0 auto}
+    .admin-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
+    .admin-top h2{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;color:var(--navy)}
+    .admin-btns{display:flex;gap:10px}
+    .btn-back{background:#fff;border:1px solid var(--border);color:var(--muted);padding:9px 20px;cursor:pointer;font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:.2s;font-family:'Montserrat',sans-serif}
+    .btn-back:hover{border-color:var(--navy);color:var(--navy)}
+    .btn-logout{background:transparent;border:1px solid #E8C5C5;color:var(--red);padding:9px 20px;cursor:pointer;font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:.2s;font-family:'Montserrat',sans-serif}
+    .btn-logout:hover{background:#FFF5F5}
+    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:32px}
+    .stat-card{background:var(--white);padding:24px 28px}
+    .stat-card-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--navy)}
+    .stat-card-num.pend{color:var(--blue)}.stat-card-num.ap{color:var(--green)}
+    .stat-card-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-top:4px;font-weight:500}
+    .table-wrap{background:var(--white);border:1px solid var(--border)}
+    .t-scroll{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;min-width:900px}
+    thead th{background:var(--navy);padding:13px 16px;text-align:left;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:500}
+    tbody td{padding:14px 16px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text);font-weight:300}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:var(--offwhite)}
+    .bp{background:rgba(26,68,128,.08);color:var(--blue);padding:3px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+    .ba{background:rgba(26,107,74,.08);color:var(--green);padding:3px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+    .bn{background:rgba(184,50,50,.08);color:var(--red);padding:3px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+    .ab{padding:6px 14px;font-size:9px;cursor:pointer;border:none;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:.2s;font-family:'Montserrat',sans-serif}
+    .ab-ap{background:rgba(26,107,74,.08);color:var(--green);border:1px solid rgba(26,107,74,.2)}
+    .ab-ap:hover{background:rgba(26,107,74,.15)}
+    .ab-neg{background:rgba(184,50,50,.08);color:var(--red);margin-left:6px;border:1px solid rgba(184,50,50,.2)}
+    .ab-neg:hover{background:rgba(184,50,50,.15)}
+    .empty{text-align:center;padding:56px;color:var(--muted);font-size:12px;font-weight:300}
+    footer{background:var(--navy);padding:48px 56px;border-top:1px solid rgba(255,255,255,.05)}
+    .footer-inner{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end}
+    .footer-right{text-align:right;color:rgba(255,255,255,.25);font-size:10px;line-height:1.8;letter-spacing:.3px}
+    @media(max-width:720px){
+      nav{padding:0 20px}nav ul{display:none}
+      .hero{padding:60px 20px 90px}.hero h1{font-size:36px}
+      .sim-wrap{padding:0 16px 56px}.sim-card{padding:32px 24px}
+      .resultado{grid-template-columns:1fr;gap:24px}.res-divider{display:none}
+      .about-section{padding:64px 20px}.cards-grid{grid-template-columns:1fr}
+      .admin-section{padding:24px 16px}.stats-grid{grid-template-columns:1fr}.admin-nav{padding:0 20px}
+      .footer-inner{flex-direction:column;gap:20px;align-items:flex-start}.footer-right{text-align:left}
+    }
+  </style>
+</head>
+<body>
+
+<div id="login-overlay" class="login-overlay" style="display:none">
+  <div class="login-box" id="login-box">
+    <div class="login-eyebrow">Banco Safra</div>
+    <h2>Área Restrita</h2>
+    <p>Acesso exclusivo para administradores. Insira sua senha para continuar.</p>
+    <div class="login-error" id="login-error">Senha incorreta. Tente novamente.</div>
+    <div class="login-input-wrap">
+      <label>Senha de acesso</label>
+      <input type="password" id="senha-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')fazerLogin()">
+      <button class="toggle-pw" onclick="toggleSenha()" id="toggle-pw-btn">👁</button>
+    </div>
+    <button class="login-btn" onclick="fazerLogin()">Entrar no painel</button>
+  </div>
+</div>
+
+<div id="page-home">
+  <nav>
+    <div class="logo-mark">
+      <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" fill="#0A1628"/>
+        <path d="M8 22V10h5.5c2.5 0 4 1.2 4 3.2 0 1.3-.7 2.3-1.8 2.8 1.4.4 2.3 1.6 2.3 3.1 0 2.2-1.7 3.5-4.4 3.5H8z" fill="white" opacity=".9"/>
+        <path d="M10.5 15h2.8c1 0 1.7-.6 1.7-1.5s-.7-1.5-1.7-1.5h-2.8V15z" fill="#0A1628"/>
+        <path d="M10.5 20h3.1c1.2 0 1.9-.7 1.9-1.7s-.7-1.7-1.9-1.7h-3.1V20z" fill="#0A1628"/>
+        <rect x="20" y="10" width="2.5" height="12" fill="white" opacity=".6"/>
+      </svg>
+      <div class="logo-text-wrap">
+        <div class="logo-name">Banco <span>Safra</span></div>
+        <div class="logo-sub">Instituição Financeira</div>
+      </div>
+    </div>
+    <ul>
+      <li><a href="#simulador">Simulador</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+    </ul>
+    <button class="nav-cta" onclick="abrirLogin()">Painel Admin</button>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-circle1"></div><div class="hero-circle2"></div><div class="hero-circle3"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Banco Safra · Crédito Pessoal</div>
+      <h1>Simule seu crédito<br>com <em>total transparência</em></h1>
+      <div class="hero-rule"></div>
+      <p>Descubra o valor exato de cada parcela antes de solicitar. Sem letras miúdas, sem surpresas. O Banco Safra acredita em clareza desde o primeiro contato.</p>
+    </div>
+  </div>
+
+  <div class="sim-wrap" id="simulador">
+    <div class="sim-card">
+      <div class="sim-eyebrow">Simulação de Empréstimo</div>
+      <div class="sim-title">Calcule suas parcelas</div>
+      <div class="sim-sub">Taxa de juros de 10% sobre o valor total · Parcelas diárias · Mínimo 5 parcelas · Valores entre R$ 10.000 e R$ 250.000</div>
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Valor desejado</span>
+          <div class="slider-value">R$ <span id="val-valor">10.000</span></div>
+        </div>
+        <input type="range" id="slider-valor" min="10000" max="250000" step="1000" value="10000" oninput="calcular()">
+        <div class="slider-range"><span>R$ 10.000</span><span>R$ 250.000</span></div>
+        <div id="info-parcelas-max" class="info-tag"></div>
+      </div>
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-label">Número de parcelas</span>
+          <div class="slider-value"><span id="val-parcelas">5</span> <small>dias</small></div>
+        </div>
+        <input type="range" id="slider-parcelas" min="5" max="24" step="1" value="5" oninput="calcular()">
+        <div class="slider-range"><span>5 dias</span><span id="label-max-parcelas">24 dias</span></div>
+      </div>
+      <div class="formula-box">Cálculo: <strong id="formula-texto">—</strong></div>
+      <div class="resultado">
+        <div class="res-item"><div class="res-label">Valor solicitado</div><div class="res-valor" id="res-principal">—</div><div class="res-sub" id="res-juros-fixo">+ 10% de juros</div></div>
+        <div class="res-divider"></div>
+        <div class="res-item"><div class="res-label">Parcela diária</div><div class="res-valor destaque" id="res-parcela">—</div><div class="res-sub" id="res-nparcelas">por dia</div></div>
+        <div class="res-divider"></div>
+        <div class="res-item"><div class="res-label">Total a pagar</div><div class="res-valor" id="res-total">—</div><div class="res-sub">valor + juros</div></div>
+      </div>
+      <div class="barra-wrap">
+        <div class="barra-header"><span class="barra-label">Composição do total</span><span class="barra-pct" id="barra-pct">10% de juros</span></div>
+        <div class="barra-bg"><div class="barra-fill" id="barra-fill" style="width:9%"></div></div>
+        <div class="barra-legend">
+          <div class="barra-leg-item"><div class="barra-dot" style="background:var(--navy)"></div>Capital (R$ <span id="leg-capital">—</span>)</div>
+          <div class="barra-leg-item"><div class="barra-dot" style="background:var(--accent)"></div>Juros (R$ <span id="leg-juros">—</span>)</div>
+        </div>
+      </div>
+      <div style="font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Tabela de parcelas diárias</div>
+      <div class="tabela-wrap">
+        <div class="tabela-header"><span>Dia</span><span>Parcela</span><span>Amortização</span><span>Juros/dia</span></div>
+        <div id="tabela-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-section" id="sobre">
+    <div class="about-inner">
+      <div class="section-eyebrow">Sobre o banco</div>
+      <div class="section-title">Criado para quem<br>mais precisa</div>
+      <div class="section-rule"></div>
+      <div class="section-desc">O Banco Safra foi fundado com um propósito claro: ser um apoio financeiro real para as pessoas. Acreditamos que todo mundo merece uma chance — seja para realizar um sonho, abrir um negócio ou sair de uma situação difícil.</div>
+      <div class="cards-grid">
+        <div class="card"><div class="card-num">01</div><h3>Realize seus sonhos</h3><p>Quer abrir um negócio, investir em algo novo ou dar um passo importante? Temos crédito para te impulsionar.</p></div>
+        <div class="card"><div class="card-num">02</div><h3>Apoio em momentos difíceis</h3><p>Situações inesperadas acontecem. O Banco Safra está aqui para oferecer suporte rápido quando você mais precisa.</p></div>
+        <div class="card"><div class="card-num">03</div><h3>Análise humanizada</h3><p>Cada pedido é avaliado com atenção e respeito pela nossa equipe. Respondemos pelo Discord.</p></div>
+      </div>
+      <div class="missao">
+        <div class="missao-rule"></div>
+        <div>
+          <p>Fomos criados para ajudar financeiramente pessoas que querem realizar seus sonhos ou que estão passando por uma situação difícil. Esse é o nosso compromisso desde o primeiro dia.</p>
+          <small>— Fundação do Banco Safra</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="logo-text-wrap">
+        <div class="logo-name" style="color:rgba(255,255,255,.8)">Banco <span style="color:rgba(255,255,255,.4)">Safra</span></div>
+        <div class="logo-sub">Instituição Financeira</div>
+      </div>
+      <div class="footer-right">© 2025 Banco Safra<br>Todos os direitos reservados</div>
+    </div>
+  </footer>
+</div>
+
+<div id="page-admin" style="display:none">
+  <div class="admin-page">
+    <div class="admin-nav">
+      <div class="logo-mark">
+        <svg class="logo-icon" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" fill="#0A1628"/><path d="M8 22V10h5.5c2.5 0 4 1.2 4 3.2 0 1.3-.7 2.3-1.8 2.8 1.4.4 2.3 1.6 2.3 3.1 0 2.2-1.7 3.5-4.4 3.5H8z" fill="white" opacity=".9"/><path d="M10.5 15h2.8c1 0 1.7-.6 1.7-1.5s-.7-1.5-1.7-1.5h-2.8V15z" fill="#0A1628"/><path d="M10.5 20h3.1c1.2 0 1.9-.7 1.9-1.7s-.7-1.7-1.9-1.7h-3.1V20z" fill="#0A1628"/><rect x="20" y="10" width="2.5" height="12" fill="white" opacity=".6"/></svg>
+        <div class="logo-text-wrap"><div class="logo-name">Banco <span>Safra</span></div><div class="logo-sub">Painel Administrativo</div></div>
+      </div>
+      <div class="admin-btns">
+        <button class="btn-back" onclick="voltarHome()">← Voltar</button>
+        <button class="btn-logout" onclick="logout()">Sair</button>
+      </div>
+    </div>
+    <div class="admin-section">
+      <div class="admin-top">
+        <h2>Solicitações de Empréstimo</h2>
+        <span style="color:var(--muted);font-size:10px;letter-spacing:1px;text-transform:uppercase" id="admin-data"></span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-card-num" id="stat-total">0</div><div class="stat-card-label">Total de pedidos</div></div>
+        <div class="stat-card"><div class="stat-card-num pend" id="stat-pend">0</div><div class="stat-card-label">Pendentes</div></div>
+        <div class="stat-card"><div class="stat-card-num ap" id="stat-ap">0</div><div class="stat-card-label">Aprovados</div></div>
+      </div>
+      <div class="table-wrap"><div class="t-scroll">
+        <table>
+          <thead><tr><th>#</th><th>Nome</th><th>Discord</th><th>Valor</th><th>Parcelas</th><th>Tipo</th><th>Garantia</th><th>Data</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="admin-tabela"><tr><td colspan="10" class="empty">Nenhuma solicitação registrada.</td></tr></tbody>
+        </table>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SENHA_ADMIN='safra2025';
+  let pedidos=JSON.parse(localStorage.getItem('bsPedidos2')||'[]');
+  let logado=sessionStorage.getItem('adminLogado')==='true';
+  function fmt(v){return v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+  function fmtInt(v){return v.toLocaleString('pt-BR')}
+  function getMaxParcelas(valor){return valor>200000?48:24}
+  function calcular(){
+    const valor=parseFloat(document.getElementById('slider-valor').value);
+    const sliderP=document.getElementById('slider-parcelas');
+    const maxP=getMaxParcelas(valor);
+    sliderP.max=maxP;
+    if(parseInt(sliderP.value)>maxP)sliderP.value=maxP;
+    if(parseInt(sliderP.value)<5)sliderP.value=5;
+    const n=parseInt(sliderP.value);
+    document.getElementById('val-valor').textContent=fmtInt(valor);
+    document.getElementById('val-parcelas').textContent=n;
+    document.getElementById('label-max-parcelas').textContent=maxP+' dias';
+    document.getElementById('info-parcelas-max').textContent=valor>200000?'Acima de R$ 200.000 — até 48 parcelas disponíveis':'Até R$ 200.000 — máximo de 24 parcelas';
+    const juros=valor*0.10;
+    const total=valor+juros;
+    const parcela=total/n;
+    const amortDia=valor/n;
+    const jurosDia=juros/n;
+    const pct=Math.round((juros/total)*100);
+    document.getElementById('res-principal').textContent='R$ '+fmtInt(valor);
+    document.getElementById('res-juros-fixo').textContent='+ R$ '+fmt(juros)+' de juros (10%)';
+    document.getElementById('res-parcela').textContent='R$ '+fmt(parcela);
+    document.getElementById('res-nparcelas').textContent='por dia · '+n+' dias';
+    document.getElementById('res-total').textContent='R$ '+fmt(total);
+    document.getElementById('barra-fill').style.width=pct+'%';
+    document.getElementById('barra-pct').textContent=pct+'% de juros';
+    document.getElementById('leg-capital').textContent=fmtInt(valor);
+    document.getElementById('leg-juros').textContent=fmt(juros);
+    document.getElementById('formula-texto').textContent='R$ '+fmtInt(valor)+' + 10% = R$ '+fmt(total)+' ÷ '+n+' dias = R$ '+fmt(parcela)+'/dia';
+    const maxLinhas=Math.min(n,12);
+    let tbody='';
+    for(let i=1;i<=maxLinhas;i++){tbody+=`<div class="tabela-row"><span class="num">Dia ${i}</span><span>R$ ${fmt(parcela)}</span><span class="amort">R$ ${fmt(amortDia)}</span><span class="juros">R$ ${fmt(jurosDia)}</span></div>`;}
+    if(n>12)tbody+=`<div class="tabela-row"><span style="color:var(--muted);grid-column:1/-1;text-align:center;font-size:11px;font-weight:300">+ ${n-12} dias adicionais com o mesmo valor</span></div>`;
+    document.getElementById('tabela-body').innerHTML=tbody;
+  }
+  calcular();
+  function abrirLogin(){
+    if(logado){showAdmin();return}
+    document.getElementById('login-overlay').style.display='flex';
+    document.getElementById('senha-input').value='';
+    document.getElementById('login-error').classList.remove('show');
+    setTimeout(()=>document.getElementById('senha-input').focus(),100);
+  }
+  function toggleSenha(){
+    const inp=document.getElementById('senha-input');
+    inp.type=inp.type==='password'?'text':'password';
+    document.getElementById('toggle-pw-btn').textContent=inp.type==='password'?'👁':'🙈';
+  }
+  function fazerLogin(){
+    const senha=document.getElementById('senha-input').value;
+    if(senha===SENHA_ADMIN){
+      logado=true;sessionStorage.setItem('adminLogado','true');
+      document.getElementById('login-overlay').style.display='none';showAdmin();
+    } else {
+      const err=document.getElementById('login-error');const box=document.getElementById('login-box');
+      err.classList.add('show');box.classList.remove('shake');void box.offsetWidth;box.classList.add('shake');
+      document.getElementById('senha-input').value='';document.getElementById('senha-input').focus();
+    }
+  }
+  function logout(){logado=false;sessionStorage.removeItem('adminLogado');voltarHome()}
+  function showAdmin(){
+    document.getElementById('page-home').style.display='none';
+    document.getElementById('page-admin').style.display='block';
+    document.getElementById('admin-data').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+    renderAdmin();
+  }
+  function voltarHome(){document.getElementById('page-home').style.display='block';document.getElementById('page-admin').style.display='none';}
+  function renderAdmin(){
+    const tbody=document.getElementById('admin-tabela');
+    document.getElementById('stat-total').textContent=pedidos.length;
+    document.getElementById('stat-pend').textContent=pedidos.filter(p=>p.status==='Pendente').length;
+    document.getElementById('stat-ap').textContent=pedidos.filter(p=>p.status==='Aprovado').length;
+    if(!pedidos.length){tbody.innerHTML='<tr><td colspan="10" class="empty">Nenhuma solicitação registrada.</td></tr>';return}
+    tbody.innerHTML=pedidos.map((p,i)=>`<tr><td style="color:var(--muted);font-weight:500">#${i+1}</td><td style="font-weight:500">${p.nome}</td><td style="color:var(--muted)">${p.discord}</td><td style="color:var(--navy);font-weight:500">R$ ${p.valor.toLocaleString('pt-BR')}</td><td>${p.parcelas}x · R$ ${p.valorParcela}</td><td>${p.tipo}</td><td style="color:var(--muted);font-size:11px">${p.garantiaTipo}${p.garantiaDesc?' — '+p.garantiaDesc:''}</td><td style="color:var(--muted)">${p.data}</td><td><span class="${p.status==='Pendente'?'bp':p.status==='Aprovado'?'ba':'bn'}">${p.status}</span></td><td>${p.status==='Pendente'?`<button class="ab ab-ap" onclick="mudarStatus(${i},'Aprovado')">Aprovar</button><button class="ab ab-neg" onclick="mudarStatus(${i},'Negado')">Negar</button>`:'—'}</td></tr>`).join('');
+  }
+  function mudarStatus(i,s){pedidos[i].status=s;localStorage.setItem('bsPedidos2',JSON.stringify(pedidos));renderAdmin()}
+</script>
+</body>
+</html>
