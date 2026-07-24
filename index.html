@@ -142,6 +142,24 @@
     footer{background:var(--navy);padding:48px 56px;border-top:1px solid rgba(255,255,255,.05)}
     .footer-inner{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end}
     .footer-right{text-align:right;color:rgba(255,255,255,.25);font-size:10px;line-height:1.8;letter-spacing:.3px}
+
+    .sol-section{background:var(--offwhite);padding:80px 56px;border-top:1px solid var(--border)}
+    .sol-inner{max-width:680px;margin:0 auto}
+    .sol-card{background:var(--white);border:1px solid var(--border);padding:48px 52px;box-shadow:0 2px 20px rgba(10,22,40,.06)}
+    .form-group{margin-bottom:22px}
+    .form-group label{display:block;font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .form-group input,.form-group select,.form-group textarea{width:100%;background:var(--offwhite);border:1px solid var(--border);padding:13px 14px;color:var(--text);font-family:'Montserrat',sans-serif;font-size:13px;font-weight:300;outline:none;transition:.2s}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--navy);background:#fff}
+    .form-group select option{background:#fff}
+    .form-group textarea{resize:vertical;min-height:90px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .form-submit{width:100%;background:var(--navy);color:#fff;padding:14px;font-weight:500;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:none;transition:.2s;font-family:'Montserrat',sans-serif;margin-top:8px}
+    .form-submit:hover{background:var(--blue)}
+    .form-nota{text-align:center;color:var(--muted);font-size:10px;margin-top:12px;letter-spacing:.3px;line-height:1.7}
+    .sol-preview{background:var(--light);border-left:2px solid var(--accent);padding:12px 16px;margin-bottom:22px;font-size:11px;color:var(--muted)}
+    .sol-preview strong{color:var(--navy)}
+    .toast-sol{position:fixed;bottom:28px;right:28px;background:var(--green);color:#fff;padding:14px 22px;font-size:13px;font-weight:500;display:none;z-index:999;box-shadow:0 4px 20px rgba(26,107,74,.3);animation:slideIn .3s ease}
+    @keyframes slideIn{from{transform:translateX(60px);opacity:0}to{transform:translateX(0);opacity:1}}
     @media(max-width:720px){
       nav{padding:0 20px}nav ul{display:none}
       .hero{padding:60px 20px 90px}.hero h1{font-size:36px}
@@ -187,7 +205,7 @@
     </div>
     <ul>
       <li><a href="#simulador">Simulador</a></li>
-      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#solicitar">Solicitar</a></li><li><a href="#sobre">Sobre</a></li>
     </ul>
     <button class="nav-cta" onclick="abrirLogin()">Painel Admin</button>
   </nav>
@@ -244,6 +262,63 @@
       <div class="tabela-wrap">
         <div class="tabela-header"><span>Dia</span><span>Parcela</span><span>Amortização</span><span>Juros/dia</span></div>
         <div id="tabela-body"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="sol-section" id="solicitar">
+    <div class="sol-inner">
+      <div class="section-eyebrow">Solicitação de Crédito</div>
+      <div class="section-title" style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--navy);margin-bottom:12px;line-height:1.2">Solicite seu empréstimo</div>
+      <div class="section-rule" style="width:32px;height:1px;background:var(--accent);margin-bottom:20px"></div>
+      <p style="color:var(--muted);font-size:12px;line-height:1.9;max-width:480px;margin-bottom:36px;font-weight:300">Preencha o formulário abaixo. Nossa equipe analisará sua solicitação e entrará em contato pelo Discord em até 24 horas.</p>
+      <div class="sol-card">
+        <div id="sol-preview" class="sol-preview" style="display:none">
+          Simulação selecionada: <strong id="sol-preview-texto">—</strong>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Seu nome</label>
+            <input type="text" id="s-nome" placeholder="Ex: João Silva">
+          </div>
+          <div class="form-group">
+            <label>Usuário no Discord</label>
+            <input type="text" id="s-discord" placeholder="Ex: joao#1234">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Valor desejado (R$)</label>
+            <input type="number" id="s-valor" placeholder="Ex: 10000" min="10000" max="100000">
+          </div>
+          <div class="form-group">
+            <label>Número de parcelas</label>
+            <select id="s-parcelas">
+              <option value="">Selecione...</option>
+              <option value="5">5 dias</option>
+              <option value="6">6 dias</option>
+              <option value="7">7 dias</option>
+              <option value="8">8 dias</option>
+              <option value="10">10 dias</option>
+              <option value="12">12 dias</option>
+              <option value="15">15 dias</option>
+              <option value="18">18 dias</option>
+              <option value="20">20 dias</option>
+              <option value="24">24 dias</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Motivo do empréstimo</label>
+          <textarea id="s-motivo" placeholder="Explique brevemente para que será usado o valor..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Bem como garantia (opcional)</label>
+          <input type="text" id="s-garantia" placeholder="Ex: Carro, imóvel, equipamento... ou deixe vazio">
+        </div>
+        <button class="form-submit" onclick="enviarSolicitacao()">Enviar Solicitação</button>
+        <p class="form-nota">Nossa equipe responderá em até 24h pelo Discord · Os valores são baseados na simulação com taxa de 10%</p>
       </div>
     </div>
   </div>
@@ -313,8 +388,8 @@
 </div>
 
 <script>
-  const SENHA_ADMIN='safra2025';
-  let pedidos=JSON.parse(localStorage.getItem('bsPedidos2')||'[]');
+  const SENHA_ADMIN='safra_777';
+  let pedidos=JSON.parse(localStorage.getItem('bsSolicitacoes')||'[]');
   let logado=sessionStorage.getItem('adminLogado')==='true';
   function fmt(v){return v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
   function fmtInt(v){return v.toLocaleString('pt-BR')}
@@ -352,6 +427,31 @@
     for(let i=1;i<=maxLinhas;i++){tbody+=`<div class="tabela-row"><span class="num">Dia ${i}</span><span>R$ ${fmt(parcela)}</span><span class="amort">R$ ${fmt(amortDia)}</span><span class="juros">R$ ${fmt(jurosDia)}</span></div>`;}
     if(n>12)tbody+=`<div class="tabela-row"><span style="color:var(--muted);grid-column:1/-1;text-align:center;font-size:11px;font-weight:300">+ ${n-12} dias adicionais com o mesmo valor</span></div>`;
     document.getElementById('tabela-body').innerHTML=tbody;
+  }
+
+  function enviarSolicitacao(){
+    const nome=document.getElementById('s-nome').value.trim();
+    const discord=document.getElementById('s-discord').value.trim();
+    const valor=parseFloat(document.getElementById('s-valor').value)||0;
+    const parcelas=document.getElementById('s-parcelas').value;
+    const motivo=document.getElementById('s-motivo').value.trim();
+    const garantia=document.getElementById('s-garantia').value.trim();
+    if(!nome||!discord||!valor||!parcelas||!motivo){alert('Preencha todos os campos obrigatórios!');return}
+    if(valor<10000||valor>100000){alert('O valor deve ser entre R$ 10.000 e R$ 100.000!');return}
+    const juros=valor*0.10;
+    const total=valor+juros;
+    const parcelaValor=(total/parseInt(parcelas));
+    pedidos.push({
+      id:Date.now(),nome,discord,
+      valor,parcelas:parseInt(parcelas),
+      valorParcela:parcelaValor.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}),
+      total,juros,motivo,garantia:garantia||'Sem garantia',
+      tipo:'Pessoal',garantiaTipo:garantia||'Sem garantia',garantiaDesc:'',
+      status:'Pendente',data:new Date().toLocaleDateString('pt-BR')
+    });
+    localStorage.setItem('bsSolicitacoes',JSON.stringify(pedidos));
+    ['s-nome','s-discord','s-valor','s-parcelas','s-motivo','s-garantia'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+    const t=document.getElementById('toast-sol');t.style.display='block';setTimeout(()=>t.style.display='none',4000);
   }
   calcular();
   function abrirLogin(){
@@ -393,8 +493,8 @@
     if(!pedidos.length){tbody.innerHTML='<tr><td colspan="10" class="empty">Nenhuma solicitação registrada.</td></tr>';return}
     tbody.innerHTML=pedidos.map((p,i)=>`<tr><td style="color:var(--muted);font-weight:500">#${i+1}</td><td style="font-weight:500">${p.nome}</td><td style="color:var(--muted)">${p.discord}</td><td style="color:var(--navy);font-weight:500">R$ ${p.valor.toLocaleString('pt-BR')}</td><td>${p.parcelas}x · R$ ${p.valorParcela}</td><td>${p.tipo}</td><td style="color:var(--muted);font-size:11px">${p.garantiaTipo}${p.garantiaDesc?' — '+p.garantiaDesc:''}</td><td style="color:var(--muted)">${p.data}</td><td><span class="${p.status==='Pendente'?'bp':p.status==='Aprovado'?'ba':'bn'}">${p.status}</span></td><td>${p.status==='Pendente'?`<button class="ab ab-ap" onclick="mudarStatus(${i},'Aprovado')">Aprovar</button><button class="ab ab-neg" onclick="mudarStatus(${i},'Negado')">Negar</button>`:'—'}</td></tr>`).join('');
   }
-  function mudarStatus(i,s){pedidos[i].status=s;localStorage.setItem('bsPedidos2',JSON.stringify(pedidos));renderAdmin()}
+  function mudarStatus(i,s){pedidos[i].status=s;localStorage.setItem('bsSolicitacoes',JSON.stringify(pedidos));renderAdmin()}
 </script>
+<div class="toast-sol" id="toast-sol">✓ Solicitação enviada! Entraremos em contato pelo Discord em breve.</div>
 </body>
 </html>
-
