@@ -384,8 +384,45 @@
 
 <script>
   const SENHA_ADMIN='safra_777';
-  let pedidos=JSON.parse(localStorage.getItem('bsSolicitacoes')||'[]');
-  let logado=sessionStorage.getItem('adminLogado')==='true';
+  // =============================================
+  // CONFIGURAÇÃO DO BANCO DE DADOS
+  // Crie uma conta gratuita em jsonbin.io
+  // Depois cole sua API Key e Bin ID abaixo
+  // =============================================
+  const JSONBIN_KEY = '$2a$10$/.E9LaTFdmaHDdFZDqYNT.Me0utCjUHs228KPyUt43/X0tPfM3fSO'; // <-- cole sua API Key do jsonbin.io
+  const JSONBIN_BIN = '6a65368dda38895dfe8fb988';     // <-- cole seu Bin ID do jsonbin.io
+  const API_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN}`;
+
+  let pedidos = [];
+  let logado = sessionStorage.getItem('adminLogado') === 'true';
+
+  async function carregarPedidos() {
+    try {
+      const res = await fetch(API_URL + '/latest', {
+        headers: { 'X-Master-Key': JSONBIN_KEY }
+      });
+      const data = await res.json();
+      pedidos = data.record.pedidos || [];
+    } catch(e) {
+      pedidos = JSON.parse(localStorage.getItem('bsBackup') || '[]');
+    }
+  }
+
+  async function salvarPedidos() {
+    try {
+      await fetch(API_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_KEY
+        },
+        body: JSON.stringify({ pedidos })
+      });
+      localStorage.setItem('bsBackup', JSON.stringify(pedidos));
+    } catch(e) {
+      localStorage.setItem('bsBackup', JSON.stringify(pedidos));
+    }
+  }
   function fmt(v){return v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
   function fmtInt(v){return v.toLocaleString('pt-BR')}
   function getMaxParcelas(valor){return 24}
@@ -424,7 +461,7 @@
     document.getElementById('tabela-body').innerHTML=tbody;
   }
 
-  function enviarSolicitacao(){
+  async function enviarSolicitacao(){
     const nome=document.getElementById('s-nome').value.trim();
     const discord=document.getElementById('s-discord').value.trim();
     const valor=parseFloat(document.getElementById('s-valor').value)||0;
@@ -473,10 +510,12 @@
     }
   }
   function logout(){logado=false;sessionStorage.removeItem('adminLogado');voltarHome()}
-  function showAdmin(){
+  async function showAdmin(){
     document.getElementById('page-home').style.display='none';
     document.getElementById('page-admin').style.display='block';
     document.getElementById('admin-data').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+    document.getElementById('admin-tabela').innerHTML='<tr><td colspan="10" class="empty">Carregando...</td></tr>';
+    await carregarPedidos();
     renderAdmin();
   }
   function voltarHome(){document.getElementById('page-home').style.display='block';document.getElementById('page-admin').style.display='none';}
@@ -488,7 +527,7 @@
     if(!pedidos.length){tbody.innerHTML='<tr><td colspan="10" class="empty">Nenhuma solicitação registrada.</td></tr>';return}
     tbody.innerHTML=pedidos.map((p,i)=>`<tr><td style="color:var(--muted);font-weight:500">#${i+1}</td><td style="font-weight:500">${p.nome}</td><td style="color:var(--muted)">${p.discord}</td><td style="color:var(--navy);font-weight:500">R$ ${p.valor.toLocaleString('pt-BR')}</td><td>${p.parcelas}x · R$ ${p.valorParcela}</td><td>${p.tipo}</td><td style="color:var(--muted);font-size:11px">${p.garantiaTipo}${p.garantiaDesc?' — '+p.garantiaDesc:''}</td><td style="color:var(--muted)">${p.data}</td><td><span class="${p.status==='Pendente'?'bp':p.status==='Aprovado'?'ba':'bn'}">${p.status}</span></td><td>${p.status==='Pendente'?`<button class="ab ab-ap" onclick="mudarStatus(${i},'Aprovado')">Aprovar</button><button class="ab ab-neg" onclick="mudarStatus(${i},'Negado')">Negar</button>`:'—'}</td></tr>`).join('');
   }
-  function mudarStatus(i,s){pedidos[i].status=s;localStorage.setItem('bsSolicitacoes',JSON.stringify(pedidos));renderAdmin()}
+  async function mudarStatus(i,s){pedidos[i].status=s;await salvarPedidos();renderAdmin();}
 </script>
 <div class="toast-sol" id="toast-sol">✓ Solicitação enviada! Entraremos em contato pelo Discord em breve.</div>
 </body>
